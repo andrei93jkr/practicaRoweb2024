@@ -1,4 +1,7 @@
-<?
+<?php
+
+namespace Database\Seeders;
+
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -10,10 +13,10 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        if (!User::where('email', 'mailto:admin@practica.local')->exists()) {
+        if (!User::where('email', 'admin@practica.local')->exists()) {
             $user = new User();
             $user->name = 'Admin';
-            $user->email = 'mailto:admin@practica.local';
+            $user->email = 'admin@practica.local';
             $user->password = Hash::make('parola');
             $user->save();
         }

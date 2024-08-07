@@ -10,8 +10,8 @@ class Category extends Model
 {
     use HasTimestamps;
 
-    public function images(): HasMany
+    public function products(): HasMany
     {
-        return $this->HasMany(related: ProductImage::class);
+        return $this->hasMany(Product::class, 'category_id', 'id');
     }
 }
