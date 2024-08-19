@@ -25,6 +25,11 @@ export default function Authenticated({ children }) {
                 className="w-56 py-2 px-3 mx-auto text-white rounded hover:bg-blue-400 mb-2">
                 Categories
             </Link>
+            <Link
+                href={route('product.list')}
+                className="w-56 py-2 px-3 mx-auto text-white rounded hover:bg-blue-400 mb-2">
+                Products
+            </Link>
             <div className={'flex-1'}></div>
             <Link
                 href={route('profile.edit')}

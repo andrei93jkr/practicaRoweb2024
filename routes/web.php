@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//rute pentru categories
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
@@ -34,6 +36,24 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/edit/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::post('store/{category?}', [CategoryController::class, 'store'])->name('categories.store');
         Route::delete('delete/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
+    });
+});
+
+
+//route pentru products 
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::group([
+        'prefix' => 'products',
+    ], function () {
+        Route::get('/', [ProductController::class, 'list'])->name('product.list');
+        Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+        Route::get('/edit/{product}', [ProductController::class, 'update'])->name('product.update');
+        Route::post('store/{product?}', [ProductController::class, 'store'])->name('product.store');
+        Route::delete('delete/{product}', [ProductController::class, 'delete'])->name('product.delete');
     });
 });
 
