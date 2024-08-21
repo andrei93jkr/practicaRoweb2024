@@ -17,7 +17,7 @@ class ProductRequest extends FormRequest
         ];
     }
 
-    public function updateOrCreateProduct(?Product $product = null)
+    public function updateOrCreateProduct(?Product $product = null): void
     {
 
         if (!$product) {

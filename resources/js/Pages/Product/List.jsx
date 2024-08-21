@@ -19,6 +19,12 @@ export default function List({ products }) {
                 <div className="py-4 px-4">
                     <div className={'text-xl font-bold'}>Products</div>
 
+                    <div className={'flex justify-end my-2'}>
+                        <Link href={route('product.create')}>
+                            <FontAwesomeIcon icon={faPlus} /> Add new product
+                        </Link>
+                    </div>
+
                     <div className="mt-6">
                         <div className='grid grid-cols-6'>
                             <div className='font-bold mb-3'>ID</div>
@@ -29,7 +35,7 @@ export default function List({ products }) {
                             <div className='font-bold mb-3'>Actions</div>
 
                             {products.map((product, index) => {
-                                return <Fragment>
+                                return <Fragment key={index}>
                                     <div className='mb-2'>{product.id}</div>
                                     <div className='mb-2'>{product.name}</div>
                                     <div className='mb-2'>{product.description}</div>

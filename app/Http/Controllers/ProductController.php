@@ -25,7 +25,7 @@ class ProductController extends Controller
     public function update(Product $product)
     {
         return Inertia::render('Product/AddEdit', [
-            'products' => $product,
+            'product' => $product,
         ]);
     }
 
