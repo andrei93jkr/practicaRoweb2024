@@ -12,7 +12,7 @@ import { useState } from "react";
 
 export default function AddEdit({ categories, product }) {
 
-    const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, post, errors, processing } = useForm({
         id: product?.id || '',
         name: product?.name || '',
         description: product?.description || '',
@@ -139,9 +139,9 @@ export default function AddEdit({ categories, product }) {
                                 <div>
                                     <div>Existing images</div>
                                     <div className={'grid grid-cols-6'}>
-                                        {currentImages.map((image) => (<div className={'p-2'} key={image.id}>
-                                            <img alt={''} src={image.url} width={200} height={200} />
-                                            <FontAwesomeIcon onClick={() => deleteProductImage(image.id)} icon={faTrash} className={'text-red-600 ml-2'} />
+                                        {currentImages.map((images) => (<div className={'p-2'} key={images.id}>
+                                            <img alt={''} src={images.url} width={200} height={200} />
+                                            <FontAwesomeIcon onClick={() => deleteProductImage(images.id)} icon={faTrash} className={'text-red-600 ml-2'} />
                                         </div>))}
                                     </div>
                                 </div>
