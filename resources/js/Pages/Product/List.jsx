@@ -4,12 +4,16 @@ import { Fragment } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export default function List({ products }) {
+export default function List({ product }) {
 
     const { delete: deleteProduct } = useForm({});
 
     const handleDeleteProduct = (id) => {
-        deleteProduct(route('product.delete', [id]));
+        deleteProduct(route('product.delete', [id]), {
+            onFinish: () => {
+                router.reload({ only: ['product'] });
+            },
+        });
     }
 
     return (
@@ -30,15 +34,17 @@ export default function List({ products }) {
                             <div className='font-bold mb-3'>ID</div>
                             <div className='font-bold mb-3'>Name</div>
                             <div className='font-bold mb-3'>Description</div>
+                            <div className='font-bold mb-3'>Category</div>
                             <div className='font-bold mb-3'>Price</div>
                             <div className='font-bold mb-3'>Quantity</div>
                             <div className='font-bold mb-3'>Actions</div>
 
-                            {products.map((product, index) => {
+                            {product.map((product, index) => {
                                 return <Fragment key={index}>
                                     <div className='mb-2'>{product.id}</div>
                                     <div className='mb-2'>{product.name}</div>
                                     <div className='mb-2'>{product.description}</div>
+                                    <div className='mb-2'>{product.category.name}</div>
                                     <div className='mb-2'>{product.price}</div>
                                     <div className='mb-2'>{product.quantity}</div>
                                     <div className={'mb-2 flex items-center'}>

@@ -1,7 +1,7 @@
 import { Link, useForm } from '@inertiajs/react';
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
 
-export default function Authenticated({ children }) {
+export default function Authenticated({ children, flash }) {
     const { post } = useForm({});
 
     const submit = (e) => {
@@ -10,7 +10,7 @@ export default function Authenticated({ children }) {
         post(route('logout'));
     };
 
-    return (<div className="flex flex-row">
+    return (<div className="flex flex-row relative">
         <aside className={`min-h-screen w-1/6 bg-blue-500 text-white flex flex-col`}>
             <Link className="flex justify-center py-2 mb-4" href="/">
                 <ApplicationLogo className="w-10 h-10 fill-current text-white" />
@@ -43,6 +43,9 @@ export default function Authenticated({ children }) {
                 </button>
             </form>
         </aside>
+
+        {flash && flash.success && <div className={'absolute right-10 top-10 rounded-lg p-4 bg-green-400'}>{flash.success}</div>}
+        {flash && flash.error && <div className={'absolute right-10 top-10 rounded-lg p-4 bg-red-400'}>{flash.error}</div>}
 
         <main className="flex w-5/6">
             {children}

@@ -1,20 +1,29 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import InputLabel from '@/Components/InputLabel';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
+import InputLabel from "@/Components/InputLabel.jsx";
+import TextInput from "@/Components/TextInput.jsx";
+import InputError from "@/Components/InputError.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import SelectInput from "@/Components/SelectInput.jsx";
+import FileInput from "@/Components/FileInput.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
-export default function AddEdit({ product }) {
+export default function AddEdit({ categories, product }) {
 
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
         id: product?.id || '',
         name: product?.name || '',
         description: product?.description || '',
+        category: product?.category_id || '',
         price: product?.price || '',
         quantity: product?.quantity || '',
+        images: [],
+        deleted_images: []
     });
+
+    const [currentImages, setCurrentImages] = useState(product?.images || []);
 
     const submit = (e) => {
         e.preventDefault();
@@ -22,6 +31,14 @@ export default function AddEdit({ product }) {
         let productRoute = product ? route('product.store', [product.id]) : route('product.store');
         post(productRoute);
     };
+
+    const deleteProductImage = (id) => {
+        let updatedImages = currentImages.filter(function (obj) {
+            return obj.id !== id;
+        });
+        setCurrentImages(updatedImages);
+        setData('deleted_images', [...data.deleted_images, id]);
+    }
 
     return (
         <AuthenticatedLayout>
@@ -31,7 +48,7 @@ export default function AddEdit({ product }) {
                     <div className={'text-xl font-bold'}>{product ? 'Edit product' : 'Add product'}</div>
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                         <div className="mt-6">
-                            <form onSubmit={submit} className="mt-6 space-y-6">
+                            <form onSubmit={submit} encType='multipart/form-data' className="mt-6 space-y-6">
                                 <div>
                                     <InputLabel htmlFor="id" value="ID" />
 
@@ -76,6 +93,22 @@ export default function AddEdit({ product }) {
                                 </div>
 
                                 <div>
+                                    <InputLabel htmlFor="category" value="Category" />
+
+                                    <SelectInput
+                                        id="category"
+                                        className="mt-1 block w-full"
+                                        value={data.category}
+                                        onChange={(e) => setData('category', e.target.value)}
+                                        required
+                                        options={categories}
+                                    />
+
+                                    <InputError className="mt-2" message={errors.category} />
+                                </div>
+
+
+                                <div>
                                     <InputLabel htmlFor="price" value="price" />
 
                                     <TextInput
@@ -101,6 +134,30 @@ export default function AddEdit({ product }) {
                                     />
 
                                     <InputError className="mt-2" message={errors.quantity} />
+                                </div>
+
+                                <div>
+                                    <div>Existing images</div>
+                                    <div className={'grid grid-cols-6'}>
+                                        {currentImages.map((image) => (<div className={'p-2'} key={image.id}>
+                                            <img alt={''} src={image.url} width={200} height={200} />
+                                            <FontAwesomeIcon onClick={() => deleteProductImage(image.id)} icon={faTrash} className={'text-red-600 ml-2'} />
+                                        </div>))}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <InputLabel htmlFor="images" value="Images" />
+
+                                    <FileInput
+                                        id="images"
+                                        className="mt-1 block w-full"
+                                        value={data.images}
+                                        multiple={true}
+                                        onChange={(e) => setData('images', e.target.files)}
+                                    />
+
+                                    <InputError className="mt-2" message={errors.images} />
                                 </div>
 
                                 <div className="flex items-center gap-4">
