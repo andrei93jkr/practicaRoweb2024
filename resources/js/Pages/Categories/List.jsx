@@ -16,10 +16,12 @@ export default function List({ categories, flash }) {
         });
     };
 
+    const { data: categoryList = [], links = [] } = categories;
+
     return (
         <AuthenticatedLayout flash={flash}>
             <Head title="Category list" />
-            <div className="w-full">
+            <div className='w-full'>
                 <div className="py-4 px-4">
                     <div className={'text-xl font-bold'}>Categories</div>
 
@@ -37,7 +39,7 @@ export default function List({ categories, flash }) {
                             <div className={'font-bold mb-3'}>Order</div>
                             <div className={'font-bold mb-3'}>Actions</div>
 
-                            {categories.map((category, index) => {
+                            {categories.data.map((category, index) => {
                                 return <Fragment key={index}>
                                     <div className={'mb-2'}>{category.id}</div>
                                     <div className={'mb-2'}>{category.name}</div>
@@ -51,6 +53,14 @@ export default function List({ categories, flash }) {
                                     </div>
                                 </Fragment>
                             })}
+                        </div>
+
+                        <div className={'flex justify-center mt-4 mb-6'}>
+                            {categories.links.map((link, key) => (<Fragment key={key}>
+                                {link.url && !link.active && <Link className={'bg-blue-500 p-2 text-white mr-2'} href={link.url}>
+                                    <span dangerouslySetInnerHTML={{ __html: link.label }} /></Link>}
+                                {link.url && link.active && <span className={'bg-gray-500 p-2 text-white mr-2'}>{link.label}</span>}
+                            </Fragment>))}
                         </div>
                     </div>
                 </div>

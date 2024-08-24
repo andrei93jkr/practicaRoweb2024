@@ -7,15 +7,36 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 
 class ProductController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
+
+        // Acceseaza parametrii din url request
+        $categoryId = $request->input('category_id');
+
+        //interogare categorii pentru lista dropdown
+        $categories = Category::all();
+
+        //interogare produse, filtrare pe categorie daca category_id este furnizat
+        $products = Product::with(['category'])
+            ->when($categoryId, function ($query, $categoryId) {
+                //intoarce ca raspuns din query category_id folosind variabila $categoryId
+                return $query->where('category_id', $categoryId);
+            })
+            ->paginate(3)
+            ->withQueryString();
+
+        // intoarce ca raspuns catre inertia view produsele, filtrele si categoria selectata
         return Inertia::render('Product/List', [
-            'product' => Product::with(['category'])->get()
+            'product' => $products,
+            'categories' => $categories,
+            'selectedCategory' => $categoryId,
         ]);
+
     }
 
     public function create()

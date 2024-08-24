@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
     public function list()
     {
+
+        $category = Category::orderBy('order')->paginate(3)->withQueryString();
+
         return Inertia::render('Categories/List', [
-            'categories' => Category::orderBy('order')->get()
+            'categories' => $category
         ]);
     }
 

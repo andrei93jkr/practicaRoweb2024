@@ -41,4 +41,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     });
 });
 
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
 require __DIR__ . '/auth.php';

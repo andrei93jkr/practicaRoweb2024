@@ -53,6 +53,7 @@ export default function Navbar({ auth }) {
                         id="navbar-default"
                         className={`absolute top-full left-0 right-0 md:static md:block md:w-auto ${navOpen ? 'block' : 'hidden'} z-50`}>
                         <ul className="font-bold flex flex-col p-4 md:p-0 md:flex-row md:space-x-8 bg-blue-500">
+
                             <li>
                                 <Link
                                     href="/"
