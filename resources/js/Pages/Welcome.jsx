@@ -90,21 +90,19 @@ export default function Welcome({ auth }) {
                             ))
                             }
                         </div>
-                        {products.data.length >= 3 && (
-                            <div className={'flex justify-center mt-4 mb-6'}>
-                                {products.links.map((link, key) => (
-                                    <Fragment key={key}>
-                                        {link.url && !link.active &&
-                                            <Link className={'bg-blue-500 p-2 text-white mr-2'} href={link.url}>
-                                                <span dangerouslySetInnerHTML={{ __html: link.label }} />
-                                            </Link>
-                                        }
-                                        {link.url && link.active && <span className={'bg-gray-500 p-2 text-white mr-2'}>{link.label}</span>
-                                        }
-                                    </Fragment>
-                                ))}
-                            </div>
-                        )}
+                        <div className={'flex justify-center mt-4 mb-6'}>
+                            {products.links.map((link, key) => (
+                                <Fragment key={key}>
+                                    {link.url && !link.active &&
+                                        <Link className={'bg-blue-500 p-2 text-white mr-2'} href={link.url}>
+                                            <span dangerouslySetInnerHTML={{ __html: link.label }} />
+                                        </Link>
+                                    }
+                                    {link.url && link.active && <span className={'bg-gray-500 p-2 text-white mr-2'}>{link.label}</span>
+                                    }
+                                </Fragment>
+                            ))}
+                        </div>
                     </>
                 ) : (
                     <div className='flex flex-row justify-center text-xl font-bold'>Sorry, no products found 😢</div>

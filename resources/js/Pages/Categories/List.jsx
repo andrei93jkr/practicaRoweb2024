@@ -31,38 +31,43 @@ export default function List({ categories, flash }) {
                         </Link>
                     </div>
 
+                    {categories && categories.data.length > 0 ? (
+                        <>
+                            <div className="mt-6">
+                                <div className={'grid grid-cols-4'}>
+                                    <div className={'font-bold mb-3'}>ID</div>
+                                    <div className={'font-bold mb-3'}>Name</div>
+                                    <div className={'font-bold mb-3'}>Order</div>
+                                    <div className={'font-bold mb-3'}>Actions</div>
 
-                    <div className="mt-6">
-                        <div className={'grid grid-cols-4'}>
-                            <div className={'font-bold mb-3'}>ID</div>
-                            <div className={'font-bold mb-3'}>Name</div>
-                            <div className={'font-bold mb-3'}>Order</div>
-                            <div className={'font-bold mb-3'}>Actions</div>
+                                    {categories.data.map((category, index) => {
+                                        return <Fragment key={index}>
+                                            <div className={'mb-2'}>{category.id}</div>
+                                            <div className={'mb-2'}>{category.name}</div>
+                                            <div className={'mb-2'}>{category.order}</div>
+                                            <div className={'mb-2'}>
+                                                <Link href={route('categories.update', [category.id])}>
+                                                    <FontAwesomeIcon icon={faPencil} className={'text-blue-600'} />
+                                                </Link>
 
-                            {categories.data.map((category, index) => {
-                                return <Fragment key={index}>
-                                    <div className={'mb-2'}>{category.id}</div>
-                                    <div className={'mb-2'}>{category.name}</div>
-                                    <div className={'mb-2'}>{category.order}</div>
-                                    <div className={'mb-2'}>
-                                        <Link href={route('categories.update', [category.id])}>
-                                            <FontAwesomeIcon icon={faPencil} className={'text-blue-600'} />
-                                        </Link>
+                                                <FontAwesomeIcon onClick={() => handleDelete(category.id)} icon={faTrash} className={'text-red-600 ml-2 cursor-pointer'} />
+                                            </div>
+                                        </Fragment>
+                                    })}
+                                </div>
 
-                                        <FontAwesomeIcon onClick={() => handleDelete(category.id)} icon={faTrash} className={'text-red-600 ml-2 cursor-pointer'} />
-                                    </div>
-                                </Fragment>
-                            })}
-                        </div>
-
-                        <div className={'flex justify-center mt-4 mb-6'}>
-                            {categories.links.map((link, key) => (<Fragment key={key}>
-                                {link.url && !link.active && <Link className={'bg-blue-500 p-2 text-white mr-2'} href={link.url}>
-                                    <span dangerouslySetInnerHTML={{ __html: link.label }} /></Link>}
-                                {link.url && link.active && <span className={'bg-gray-500 p-2 text-white mr-2'}>{link.label}</span>}
-                            </Fragment>))}
-                        </div>
-                    </div>
+                                <div className={'flex justify-center mt-4 mb-6'}>
+                                    {categories.links.map((link, key) => (<Fragment key={key}>
+                                        {link.url && !link.active && <Link className={'bg-blue-500 p-2 text-white mr-2'} href={link.url}>
+                                            <span dangerouslySetInnerHTML={{ __html: link.label }} /></Link>}
+                                        {link.url && link.active && <span className={'bg-gray-500 p-2 text-white mr-2'}>{link.label}</span>}
+                                    </Fragment>))}
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <div><div className='flex flex-row justify-center text-xl font-bold'>Sorry, no products found 😢</div></div>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>
