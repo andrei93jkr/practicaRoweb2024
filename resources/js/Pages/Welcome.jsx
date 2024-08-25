@@ -9,13 +9,19 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Welcome({ auth }) {
 
-    // daca products, data, categories nu sunt definite din usePage props, seteaza ca si un array gol
-    const { products = { data: [] }, categories = [], selectedCategory, searchTerm } = usePage().props;
+    // daca products, data, categories, selectedCategory nu sunt definite din usePage props, seteaza ca si un array gol
+    const { products = { data: [] }, categories = [], selectedCategory: initialSelectedCategory, searchTerm } = usePage().props;
 
+    //foloseste useState hook cu categoria initiala selectata, daca nu lasa campul gol
+    const [selectedCategory, setSelectedCategory] = useState(initialSelectedCategory || '');
+
+    //defineste searchTerm daca nu lasa campul gol
     const [term, setTerm] = useState(searchTerm || '');
 
     //daca se selecteaza o categorie din dropdown, declanseaza instructiunile din interiorul functiei
     const handleFilterChange = (e) => {
+        const selectedCategory = e.target.value;
+        setSelectedCategory(selectedCategory);
         //trimite ca si raspuns catre ruta home si functia index din controler parametrii category_id e.target.value
         Inertia.get(route('home.index'), {
             category_id: e.target.value,
@@ -23,6 +29,7 @@ export default function Welcome({ auth }) {
         });
     };
 
+    //search event
     const handleSearch = (e) => {
         e.preventDefault();
         Inertia.get(route('home.index'), {
@@ -30,9 +37,28 @@ export default function Welcome({ auth }) {
             search_term: term
         });
     };
-
+    //manipulare input change
     const handleInputChange = (e) => {
         setTerm(e.target.value);
+    };
+
+    //manipulare resetare input
+    const handleReset = () => {
+        // Reset the state values
+        setSelectedCategory('');
+        setTerm('');
+
+        //sterge parametry din url
+        const url = new URL(window.location);
+        url.searchParams.delete('category');
+        url.searchParams.delete('search');
+        window.history.replaceState({}, '', url);
+
+        // trage toate produsele prin resetarea filtrului        
+        Inertia.get(route('home.index'), {
+            category_id: '',
+            search_term: ''
+        });
     };
 
     return (<>
@@ -70,6 +96,9 @@ export default function Welcome({ auth }) {
                                 id="SearchBar"
                             />
                             <PrimaryButton type="submit" className='ml-2'>Search</PrimaryButton>
+                            <PrimaryButton onClick={handleReset} className='ml-2 bg-red-500 hover:bg-red-300'>
+                                Reset
+                            </PrimaryButton>
                         </form>
                     </div>
                 </div>
